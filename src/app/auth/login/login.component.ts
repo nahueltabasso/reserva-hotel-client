@@ -38,16 +38,12 @@ export class LoginComponent implements OnInit {
     this.persona.email = email;
     this.persona.password = password;
 
-    console.log(this.persona);
-    return ;
-
     this.authService.login(this.persona).subscribe(data => {
       this.persona = data;
       this.storage.saveUser(this.persona);
       this.router.navigate(['']);
       Swal.fire('Login', `Hola ${this.persona.nombre} ${this.persona.apellido}, has iniciado sesion con exito!`, 'success');
     }, (err) => {
-      console.log(err);
       Swal.fire({
         icon: 'error',
         title: 'Ocurrio un error!',

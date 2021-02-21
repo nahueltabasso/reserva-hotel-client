@@ -60,9 +60,7 @@ export class RegistroComponent implements OnInit {
     this.personaDTO.nroDocumento = nroDocumento;
     this.personaDTO.cuit = cuit;
     this.personaDTO.telefono = telefono;
-    console.log(this.personaDTO);
-    
-    return;
+
     this.authService.registracion(this.personaDTO).subscribe(data => {
       Swal.fire('Registrado!', 'Usuario registrado correctamente', 'success');
       this.router.navigate(['/login']);

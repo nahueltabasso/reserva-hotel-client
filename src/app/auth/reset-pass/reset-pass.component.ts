@@ -52,8 +52,6 @@ export class ResetPassComponent implements OnInit {
 
     const { email } = this.formularioSolicitud.value;
     this.email = email;
-    console.log(this.email);
-    return ;
 
     this.authService.forgotPassword(this.email).subscribe(data => {
       Swal.fire('Listo!', 'Se te ha enviado un correo a tu casilla con los pasos a seguir!', 'success');
