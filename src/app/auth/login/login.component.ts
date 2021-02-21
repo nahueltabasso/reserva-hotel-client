@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Persona, Salon } from '../../models/model';
+import { Persona } from '../../models/model';
 import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

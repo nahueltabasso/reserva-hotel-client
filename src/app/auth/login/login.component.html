@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="card border-primary text-center">
+    <div class="card-header">
+        <h6>
+            LOGIN
+        </h6>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="formulario">
+            <div class="form-group col-sm-6">
+                <input type="text" formControlName="email" class="form-control" name="email" id="email" placeholder="Email" autofocus required>
+
+                <div class="alert alert-danger" *ngIf="formulario.get('email').hasError('required') && (formulario.get('email').dirty || formulario.get('email').touched)">
+                    Este campo es requerido
+                </div>
+                <div class="alert alert-danger" *ngIf="formulario.get('email').hasError('email') && (formulario.get('email').dirty || formulario.get('email').touched)">
+                    Email no valido
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <input type="password" formControlName="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                <div class="alert alert-danger" *ngIf="formulario.get('password').hasError('required') && (formulario.get('password').dirty || formulario.get('password').touched)">
+                    Este campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <button (click)='login()' type="submit" class="btn btn-lg btn-primary btn-block" [disabled]="formulario.invalid">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
