@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { ReservasComponent } from './main/reservas/reservas.component';
+import { ReservaAddComponent } from './main/reservas/reserva-add/reserva-add.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { FooterComponent } from './shared/footer/footer.component';
     RegistroComponent,
     ResetPassComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    ReservasComponent,
+    ReservaAddComponent
   ],
   imports: [
     BrowserModule,

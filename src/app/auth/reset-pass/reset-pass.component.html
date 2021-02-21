@@ -1,1 +1,56 @@
-<p>reset-pass works!</p>
+<div class="card bg-light text-black-50 my-2">
+    <div class="card-header">
+        <h1 class="text-center">Formulario Cambio de Contraseña</h1>
+    </div>
+    <div class="card-body" *ngIf="!flagToken">
+        <form class="form-group" [formGroup]="formularioSolicitud">
+            <div class="row">
+                <div class="form-group col">
+                    <input type="email" class="form-control" formControlName="email" placeholder="example@liv.com" />
+                    <div class="alert alert-danger" *ngIf="formularioSolicitud.get('email').hasError('required') && (formularioSolicitud.get('email').dirty || formularioSolicitud.get('email').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formularioSolicitud.get('email').hasError('email') && (formularioSolicitud.get('email').dirty || formularioSolicitud.get('email').touched)">
+                        Email no valido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formularioSolicitud.invalid" (click)="solicitarCambioContrasenia()">
+                        Solicitar Cambio de Contraseña
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body" *ngIf="flagToken">
+        <form class="form-group" [formGroup]="formularioResetPass">
+            <div class="alert alert-danger ocultar" role="alert" *ngIf="checkPassword()">
+                Las contraseñas no coiciden, vuelve a intentar!
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <input type="password" class="form-control col" formControlName="password" placeholder="Ingresar Contraseña" />
+                    <div class="alert alert-danger" *ngIf="formularioResetPass.get('password').hasError('required') && (formularioResetPass.get('password').dirty || formularioResetPass.get('password').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="password" class="form-control col" formControlName="passwordConfirm" placeholder="Ingresar nuevamente la Contraseña" />
+                    <div class="alert alert-danger" *ngIf="formularioResetPass.get('passwordConfirm').hasError('required') && (formularioResetPass.get('passwordConfirm').dirty || formularioResetPass.get('passwordConfirm').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formularioResetPass.invalid" (click)="modificarContrasenia()">
+                    Cambiar Contraseña
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
