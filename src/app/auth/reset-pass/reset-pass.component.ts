@@ -37,7 +37,7 @@ export class ResetPassComponent implements OnInit {
 
   public createForm() {
     this.formularioSolicitud = this.fb.group({
-      emai: ['', Validators.compose([Validators.required, Validators.email])]
+      email: ['', Validators.compose([Validators.required, Validators.email])]
     });
     this.formularioResetPass = this.fb.group({
       password: ['', Validators.required],
@@ -54,22 +54,22 @@ export class ResetPassComponent implements OnInit {
     this.email = email;
 
     this.authService.forgotPassword(this.email).subscribe(data => {
+      console.log("entra", data);
       Swal.fire('Listo!', 'Se te ha enviado un correo a tu casilla con los pasos a seguir!', 'success');
     }, (err) => {
-      console.log(err);
+      Swal.fire('Error!', `${err.error.message}`, 'error');
     });
   }
 
   public modificarContrasenia() {
     if (this.formularioResetPass.invalid) return ;
-    const { token, password } = this.formularioResetPass.value;
-    this.token = token;
+    const { password } = this.formularioResetPass.value;
     this.password = password;
     this.authService.resetPassword(this.token, this.password).subscribe(data => {
       Swal.fire('Listo', 'Contraseña modificada exitosamente!', 'success');
       this.router.navigate(['/login']);
     }, (err) => {
-      console.log(err);
+      Swal.fire('Error!', `${err.error.message}`, 'error');
     })
   }
 

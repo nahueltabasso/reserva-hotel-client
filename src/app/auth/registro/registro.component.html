@@ -4,6 +4,8 @@
     </div>
     <div class="card-body">
         <form class="form-group" [formGroup]="formulario" (ngSubmit)="registrarNuevoUsuario()">
+            <h3 class="text-center">DATOS PERSONALES</h3>
+            <hr>
             <div class="row">
                 <div class="form-group col">
                     <input type="text" class="form-control" formControlName="nombre" placeholder="Ingresar Nombre" />
@@ -28,10 +30,10 @@
 
             <div class="row">
                 <div class="form-group col">
-                    <select id="tipoDoc" name="tipoDoc" formControlName="tipoDocumento" placeholder="Tipo Documento" class="form-control" (select)="seleccionarTipoDocumento($event.value)">
+                    <select id="tipoDoc" name="tipoDoc" formControlName="tipoDocumento" placeholder="Tipo Documento" class="form-control" (ngModelChange)="seleccionarTipoDocumento($event)">
                         <option value="" disabled selected>Seleccionar Tipo Documento</option>
-                        <option [ngValue]="'DNI'">DNI</option>
-                        <option [ngValue]="'LCI'">LCI</option>    
+                        <option [value]="'DNI'">DNI</option>
+                        <option [value]="'LCI'">LCI</option>    
                     </select>
                     <div class="alert alert-danger" *ngIf="formulario.get('tipoDocumento').hasError('required') && (formulario.get('tipoDocumento').dirty || formulario.get('tipoDocumento').touched)">
                         Este campo es requerido
@@ -67,10 +69,10 @@
 
             <div class="row">
                 <div class="form-group col">
-                    <select id="genero" name="genero" formControlName="genero" placeholder="Seleccionar Sexo" class="form-control" (select)="seleccionarGenero($event.value)">
+                    <select id="genero" name="genero" formControlName="genero" placeholder="Seleccionar Sexo" class="form-control" (ngModelChange)="seleccionarGenero($event)">
                         <option value="" disabled selected>Seleccionar Sexo</option>
-                        <option [ngValue]="'M'">MASCULINO</option>
-                        <option [ngValue]="'F'">FEMENINO</option>    
+                        <option [value]="'M'">MASCULINO</option>
+                        <option [value]="'F'">FEMENINO</option>    
                     </select>
                     <div class="alert alert-danger" *ngIf="formulario.get('genero').hasError('required') && (formulario.get('genero').dirty || formulario.get('genero').touched)">
                         Este campo es requerido
@@ -118,6 +120,94 @@
                     </div>
                     <div class="alert alert-danger" *ngIf="checkPassword()">
                         Las contraseñas no coinciden
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <h3 class="text-center">DATOS DOMICILIO</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="pais" name="pais" formControlName="pais" placeholder="Seleccionar Pais" class="form-control" (ngModelChange)="seleccionarPais($event)">
+                        <option value="" disabled selected>Seleccionar Pais</option>
+                        <option *ngFor="let pais of comboPaises" [value]="pais.id">{{ pais.nombre }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('pais').hasError('required') && (formulario.get('pais').dirty || formulario.get('pais').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <select id="provincia" name="provincia" formControlName="provincia" placeholder="Seleccionar Provincia" class="form-control" (ngModelChange)="seleccionarProvincia($event)">
+                        <option value="" disabled selected>Seleccionar Provincia</option>
+                        <option *ngFor="let prov of comboProvincias" [value]="prov.id">{{ prov.nombre }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('provincia').hasError('required') && (formulario.get('provincia').dirty || formulario.get('provincia').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <select id="ciudad" name="ciudad" formControlName="ciudad" placeholder="Seleccionar Ciudad" [compareWith]="compararLocalidad" class="form-control" (ngModelChange)="seleccionarCiudad($event)">
+                        <option value="" disabled selected>Seleccionar Ciudad</option>
+                        <option *ngFor="let l of comboLocalidades" [ngValue]="l">{{ l.nombre }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('ciudad').hasError('required') && (formulario.get('ciudad').dirty || formulario.get('ciudad').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="calle" placeholder="Ingresar Calle" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('calle').hasError('required') && (formulario.get('calle').dirty || formulario.get('calle').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="numero" placeholder="Ingresar Numero" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('numero').hasError('required') && (formulario.get('numero').dirty || formulario.get('numero').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('numero').hasError('pattern') && (formulario.get('numero').dirty || formulario.get('numero').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="isDpto" name="isDpto" formControlName="isDpto" placeholder="Es Departamento" class="form-control" (ngModelChange)="seleccionarTipoCasa($event)">
+                        <option value="" disabled selected>Es Departamento?</option>
+                        <option [value]="'true'">SI</option>
+                        <option [value]="false">NO</option>    
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('genero').hasError('required') && (formulario.get('genero').dirty || formulario.get('genero').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="piso" placeholder="Ingresar Piso del Departamento" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('piso').hasError('required') && (formulario.get('piso').dirty || formulario.get('piso').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('piso').hasError('pattern') && (formulario.get('piso').dirty || formulario.get('piso').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="departamento" placeholder="Ingresar Numero del Departamento" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('departamento').hasError('required') && (formulario.get('departamento').dirty || formulario.get('departamento').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('departamento').hasError('pattern') && (formulario.get('departamento').dirty || formulario.get('departamento').touched)">
+                        Ingrese solo numeros
                     </div>
                 </div>
             </div>

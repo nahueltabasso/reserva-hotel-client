@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Persona } from '../../models/model';
+import { Persona, Pais, Provincia, Localidad, Domicilio } from '../../models/model';
 import { PATTERN_ONLYLETTERS, PATTERN_ONLYNUMBER, validEqualsPasswords, MIN_DNI, MAX_DNI } from '../../shared/constants';
 import Swal from 'sweetalert2';
+import { PersonaService } from '../../services/persona.service';
 
 @Component({
   selector: 'app-registro',
@@ -15,14 +16,27 @@ export class RegistroComponent implements OnInit {
 
   formulario: FormGroup;
   personaDTO: Persona = new Persona();
-
+  comboPaises: Pais[] = [];
+  comboProvincias: Provincia[] = [];
+  comboLocalidades: Localidad[] = [];
+  flagDpto: boolean = false;
 
   constructor(private authService: AuthService,
+              private personaService: PersonaService,
               private fb: FormBuilder,
               private router: Router) {}
 
   ngOnInit() {
     this.createForm();
+    // Iniciamos el objeto domicilio de la persona;
+    this.personaDTO.domicilio = new Domicilio();
+    this.personaService.getPaises().subscribe(data => {
+      this.comboPaises = data;
+      this.formulario.controls['provincia'].disable();
+      this.formulario.controls['ciudad'].disable();
+      this.formulario.controls['piso'].disable();
+      this.formulario.controls['departamento'].disable();
+    });
   }
 
   public createForm() {
@@ -36,7 +50,15 @@ export class RegistroComponent implements OnInit {
       tipoDocumento: ['', Validators.required],
       cuit: ['', Validators.compose([Validators.required, Validators.pattern(PATTERN_ONLYNUMBER)])],
       telefono: ['', Validators.compose([Validators.required, Validators.pattern(PATTERN_ONLYNUMBER)])],
-      genero: ['', Validators.required]
+      genero: ['', Validators.required],
+      pais: ['', Validators.required],
+      provincia: ['', Validators.required],
+      ciudad: ['', Validators.required],
+      calle: ['', Validators.required],
+      numero: ['', Validators.compose([Validators.required, Validators.pattern(PATTERN_ONLYNUMBER)])],
+      isDpto: ['', ],
+      piso: ['', Validators.pattern(PATTERN_ONLYNUMBER)],
+      departamento: ['', Validators.pattern(PATTERN_ONLYNUMBER)]
     }, {
       validators: validEqualsPasswords
     });
@@ -50,9 +72,36 @@ export class RegistroComponent implements OnInit {
     this.personaDTO.genero = event
   }
 
+  public seleccionarPais(event) {
+    this.personaService.getProvinciasByPais(event).subscribe(data => {
+      this.comboProvincias = data;
+      this.formulario.controls['provincia'].enable();
+    });
+  }
+
+  public seleccionarProvincia(event) {
+    this.personaService.getLocalidadesByProvincia(event).subscribe(data => {
+      this.comboLocalidades = data;
+      this.formulario.controls['ciudad'].enable();
+      console.log(this.comboLocalidades);
+    });
+  }
+
+  public seleccionarCiudad(event) {
+    this.personaDTO.domicilio.localidad = event;
+  }
+
+  public seleccionarTipoCasa(event) {
+    const flag = event;
+    if (event) {
+      this.formulario.controls['piso'].enable();
+      this.formulario.controls['departamento'].enable();
+    }
+  }
+
   public registrarNuevoUsuario() {
     if (this.formulario.invalid) return;
-    const { nombre, apellido, email, password, nroDocumento, cuit, telefono } = this.formulario.value;
+    const { nombre, apellido, email, password, nroDocumento, cuit, telefono, calle, numero, piso, departamento } = this.formulario.value;
     this.personaDTO.nombre = nombre;
     this.personaDTO.apellido = apellido;
     this.personaDTO.email = email;
@@ -60,12 +109,18 @@ export class RegistroComponent implements OnInit {
     this.personaDTO.nroDocumento = nroDocumento;
     this.personaDTO.cuit = cuit;
     this.personaDTO.telefono = telefono;
+    // this.personaDTO.domicilio.localidad = ciudad;
+    this.personaDTO.domicilio.calle = calle;
+    this.personaDTO.domicilio.numero = numero;
+    this.personaDTO.domicilio.piso = piso;
+    this.personaDTO.domicilio.departamento = departamento;
 
+    console.log(this.personaDTO);
     this.authService.registracion(this.personaDTO).subscribe(data => {
       Swal.fire('Registrado!', 'Usuario registrado correctamente', 'success');
       this.router.navigate(['/login']);
     }, (err) => {
-      Swal.fire('Error!', 'Ocurrio un error!', 'error');
+      Swal.fire('Error!', `${err.error.message}`, 'error');
     });
   }
 
@@ -73,5 +128,9 @@ export class RegistroComponent implements OnInit {
     return this.formulario.hasError('notEquals') &&
            this.formulario.get('password').dirty &&
            this.formulario.get('passwordConfirm').dirty;
+  }
+
+  public compararLocalidad(l1: Localidad, l2: Localidad): boolean{
+    return l1.id === l2.id;
   }
 }
