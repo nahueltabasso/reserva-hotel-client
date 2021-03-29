@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.persona).subscribe(data => {
       this.persona = data;
       this.storage.saveUser(this.persona);
+      this.storage.saveToken(this.persona.token);
       this.router.navigate(['']);
       Swal.fire('Login', `Hola ${this.persona.nombre} ${this.persona.apellido}, has iniciado sesion con exito!`, 'success');
     }, (err) => {

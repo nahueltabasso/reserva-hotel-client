@@ -1,1 +1,28 @@
-<p>reservas works!</p>
+<div class="card border-primary text-center">
+    <div class="card-header">
+        <h6>
+            LOGIN
+        </h6>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="formulario">
+
+            <div class="row">
+                <div class="form-group col">
+                    <input type="date" class="form-control col" formControlName="fechaDesde" placeholder="Fecha Desde" />
+                </div>
+
+                <div class="form-group col">
+                    <input type="date" class="form-control col" min="fechaDesde" formControlName="fechaHasta" placeholder="Ingresar Hasta" />
+                </div>
+
+                <div class="form-group col">
+                    <select id="estado" name="estado" formControlName="estadoReserva" placeholder="Seleccionar Ciudad" [compareWith]="compararEstados" class="form-control" (ngModelChange)="seleccionarEstado($event)">
+                        <option value="" disabled selected>Seleccionar Estado</option>
+                        <option *ngFor="let e of comboEstados" [ngValue]="e">{{ e.descripcion }}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

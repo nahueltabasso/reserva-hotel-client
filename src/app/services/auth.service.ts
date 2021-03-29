@@ -28,8 +28,8 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const personaLogin = this.storage.getUser();
-    if (personaLogin) return true;
+    const token = this.storage.getToken();
+    if (token) return true;
     return false;
   }
 

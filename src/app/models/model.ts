@@ -15,6 +15,7 @@ export class Persona {
     legajo: number;
     rol: Rol;
     domicilio: Domicilio;
+    token: string;
 }
 
 export class Rol {
