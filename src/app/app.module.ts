@@ -15,7 +15,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { ReservasComponent } from './main/reservas/reservas.component';
 import { ReservaAddComponent } from './main/reservas/reserva-add/reserva-add.component';
 import { DashboardComponent } from './main/dashboard/dashboard.component';
-import { authInterceptorProvider } from '../helpers/auth.interceptor';
+import { authInterceptorProvider } from './helpers/auth.interceptor';
 
 @NgModule({
   declarations: [
