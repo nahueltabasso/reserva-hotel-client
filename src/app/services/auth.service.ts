@@ -40,4 +40,10 @@ export class AuthService {
   resetPassword(token: string, newPass: string): Observable<any> {
     return this.http.post<any>(this.endpoint + '/ModificarContraseña?token=' + token + '&newPass=' + newPass, null);
   }
+
+  isCliente(): boolean {
+    const usuario = this.storage.getUser();
+    if (usuario.rol.nombreRol === 'Cliente') return true;
+    return false;
+  }
 }

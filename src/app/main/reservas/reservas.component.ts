@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { EstadoReserva, Reserva } from '../../models/model';
+import { EstadoReserva, Reserva, ReservaFilterDTO } from '../../models/model';
 import { ReservaService } from '../../services/reserva.service';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reservas',
@@ -11,25 +12,32 @@ import { DatePipe } from '@angular/common';
 })
 export class ReservasComponent implements OnInit {
 
+  titulo: string;
   formulario: FormGroup;
   fechaDesdeFilter: Date = new Date();
   fechaHastaFilter: Date = new Date();
-  estadoReservaFilter: EstadoReserva = new EstadoReserva();
   reservaList: Reserva[] = [];
+  reservaListRespaldo: Reserva[] = [];
   comboEstados: EstadoReserva[] = [];
+  reservaFilterDto: ReservaFilterDTO = new ReservaFilterDTO();
 
   constructor(private reservaService: ReservaService,
+              private authService: AuthService,
               private fb: FormBuilder,
               private datePipe: DatePipe) {}
 
   ngOnInit() {
+    if (this.authService.isCliente()) {
+      this.titulo = 'Mis Reservas';
+    } else {
+      this.titulo = 'Reservas';
+    }
     this.reservaService.getAllReservas().subscribe(data => {
       this.reservaList = data;
+      this.reservaListRespaldo = data;
     });
     this.reservaService.getAllEstados().subscribe(estados => {
       this.comboEstados = estados;
-      console.log(this.comboEstados);
-      this.estadoReservaFilter = this.comboEstados[0];
     });
     this.createForm();    
     this.formulario.controls['fechaDesde'].setValue(this.transformDate(this.fechaDesdeFilter));
@@ -45,7 +53,8 @@ export class ReservasComponent implements OnInit {
   }
 
   public seleccionarEstado(event) {
-    this.estadoReservaFilter = event;
+    // this.estadoReservaFilter = event;
+    this.reservaFilterDto.estado = event;
   }
 
   lastDateValidator() {
@@ -84,4 +93,17 @@ export class ReservasComponent implements OnInit {
     return e1.id === e2.id;
   }
 
+  public search() {
+    if (!this.formulario.valid) return;
+  }
+
+  public cleanFilter() {
+    this.reservaFilterDto = new ReservaFilterDTO();
+    this.formulario.reset();
+    this.ngOnInit();
+  }
+
+  public eliminar(reserva: Reserva) {
+
+  }
 }

@@ -1,8 +1,8 @@
 <div class="card border-primary text-center">
     <div class="card-header">
-        <h6>
-            LOGIN
-        </h6>
+        <h1>
+            FILTROS
+        </h1>
     </div>
     <div class="card-body">
         <form [formGroup]="formulario">
@@ -24,5 +24,72 @@
                 </div>
             </div>
         </form>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px;">
+            <button mat-raised-button class="btn m-1 float-right" type="submit" color="accent" (click)="search()" [disabled]="!formulario.valid">
+                BUSCAR
+            </button>
+            <button mat-raised-button class="btn m-1 float-right" type="button" (click)="cleanFilter()">
+                LIMPIAR
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="card border-primary text-center my-4">
+    <div class="card-header">
+        <h1 class="align-self-center">
+            {{ titulo }}
+        </h1>
+        <button mat-raised-button color="accent" [routerLink]="['/reservas/nueva-reserva']" class="align-self-end">NUEVA RESERVA</button>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-striped" *ngIf="reservaList.length > 0">
+            <thead>
+                <tr>
+                    <td>Fecha Reserva</td>
+                    <td>Cant Dias</td>
+                    <td>Fecha Entrada</td>
+                    <td>Fecha Salidas</td>
+                    <td>Tipo Hab</td>
+                    <td>Nro Hab</td>
+                    <td>Salon</td>
+                    <td>Fecha Cancelacion</td>
+                    <td>Estado</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let reserva of reservaList">
+                    <td>{{ reserva.fechaReserva | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ reserva.cantDias }}</td>
+                    <td>{{ reserva.fechaEntrada | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ reserva.fechaSalida | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ reserva.habitacion.id != null ? reserva.habitacion.tipoHabitacion.denominacion : '' }}</td>
+                    <td>{{ reserva.habitacion ? reserva.habitacion.numeroHabitacion : '' }}</td>
+                    <td>{{ reserva.salon ? reserva.salon.nombreSalon : '' }}</td>
+                    <td>{{ reserva.fechaCancelacion | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ reserva.estadoReserva.descripcion }}</td>
+                    <td style="width: 200px; padding-left: 50px;">
+                        <div class="row">
+                            <button mat-mini-fab color="accent" title="Ver Detalle" [routerLink]="['/reservas/detalle', reserva.id]">
+                                <span class="material-icons">
+                                    visibility
+                                </span>
+                            </button>
+                            <button mat-mini-fab color="accent" title="Cancelar" [routerLink]="['/reservas/edit', reserva.id]">
+                                <span class="material-icons">
+                                    edit
+                                </span>      
+                            </button>
+                            <button mat-mini-fab color="accent" title="Eliminar" (click)="eliminar(reserva)" [disabled]="true">
+                                <span class="material-icons">
+                                    delete_forever
+                                </span>  
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

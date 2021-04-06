@@ -93,5 +93,10 @@ export class Reserva {
     salon: Salon;
 }
 
+export class ReservaFilterDTO {
+    estado: EstadoReserva;
+    fechaDesde: Date;
+    fechaHasta: Date;
+}
 
 

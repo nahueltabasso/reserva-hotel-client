@@ -17,6 +17,10 @@ import { ReservaAddComponent } from './main/reservas/reserva-add/reserva-add.com
 import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { authInterceptorProvider } from './helpers/auth.interceptor';
 
+// MATERIAL
+import { MatButtonModule } from '@angular/material/button';
+import { ReservaViewComponent } from './main/reservas/reserva-view/reserva-view.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,14 +31,16 @@ import { authInterceptorProvider } from './helpers/auth.interceptor';
     FooterComponent,
     ReservasComponent,
     ReservaAddComponent,
-    DashboardComponent
+    DashboardComponent,
+    ReservaViewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
   ],
   providers: [DatePipe, authInterceptorProvider],
   bootstrap: [AppComponent]
