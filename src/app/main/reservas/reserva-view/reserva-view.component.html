@@ -1,1 +1,134 @@
-<p>reserva-view works!</p>
+<div class="card bg-light text-black-50 my-2">
+    <div class="card-header">
+        <h1 class="text-center">DETALLE DE LA RESERVA - ID: {{ reserva.id }}</h1>
+    </div>
+    <div class="card-body">
+        <form class="form-group" [formGroup]="formularioReserva">
+            <h3 class="text-center">DATOS RESERVA</h3>
+            <hr>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">ID Reserva</label>
+                    <input type="text" class="form-control" formControlName="id" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Reserva</label>
+                    <input type="text" class="form-control" formControlName="fechaReserva" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Estado Reserva</label>
+                    <input type="text" class="form-control" formControlName="estadoReserva" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Inicio Reserva</label>
+                    <input type="text" class="form-control" formControlName="fechaEntrada" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Fin Reserva</label>
+                    <input type="text" class="form-control col" formControlName="fechaSalida" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Cancelacion</label>
+                    <input type="text" class="form-control col" formControlName="fechaCancelacion" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col" *ngIf="isHabitacion">
+                    <label for="exampleDataList" class="form-label">Tipo Habitacion</label>
+                    <input type="text" class="form-control" formControlName="tipoHabitacion" />
+                </div>
+
+                <div class="form-group col" *ngIf="isHabitacion">
+                    <label for="exampleDataList" class="form-label">Nro Habitacion</label>
+                    <input type="text" class="form-control" formControlName="nroHabitacion" />
+                </div>
+
+                <div class="form-group col" *ngIf="!isHabitacion">
+                    <label for="exampleDataList" class="form-label">Nro Salon</label>
+                    <input type="text" class="form-control" formControlName="nroSalon" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Precio Por Dia</label>
+                    <input type="text" class="form-control" formControlName="precioPorDia" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Duracion</label>
+                    <input type="text" class="form-control col" formControlName="cantDias" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Precio Total</label>
+                    <input type="text" class="form-control col" formControlName="precioTotal" />
+                </div>
+            </div>
+        </form>
+
+        <form [formGroup]="formularioPersona" *ngIf="perteneceAlHotel">
+            <hr>
+            <h3 class="text-center">DATOS CLIENTE</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Nombre</label>
+                    <input type="text" class="form-control col" formControlName="nombre" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Apellido</label>
+                    <input type="text" class="form-control col" formControlName="apellido" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Tipo y Nro de Documento</label>
+                    <input type="text" class="form-control col" formControlName="tipoNroDoc" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">CUIT/CUIL</label>
+                    <input type="text" class="form-control col" formControlName="cuit" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Email</label>
+                    <input type="text" class="form-control col" formControlName="email" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Telefono</label>
+                    <input type="text" class="form-control col" formControlName="telefono" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Sexo</label>
+                    <input type="text" class="form-control col" formControlName="genero" />
+                </div>
+            </div>
+
+        </form>
+
+        <div class="row">
+            <button type="submit" class="btn btn-primary submit-btn btn-block" routerLink="/reservas">
+                Volver
+            </button>
+        </div>
+    </div>
+</div>

@@ -46,4 +46,9 @@ export class AuthService {
     if (usuario.rol.nombreRol === 'Cliente') return true;
     return false;
   }
+
+  get usuarioLogueado() {
+    const usuario = this.storage.getUser();
+    return usuario;
+  }
 }

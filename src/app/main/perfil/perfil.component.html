@@ -1,0 +1,138 @@
+<div class="card bg-light text-black-50 my-2">
+    <div class="card-header">
+        <h1 class="text-center">Mi Perfil - {{ persona.nombre }} {{ persona.apellido }}</h1>
+    </div>
+    <div class="card-body">
+        <form class="form-group" [formGroup]="formulario">
+            <h3 class="text-center">DATOS PERSONALES</h3>
+            <hr>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">ID Persona</label>
+                    <input type="text" class="form-control" formControlName="id" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" formControlName="nombre" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" formControlName="apellido" />
+                </div>
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Sexo</label>
+                    <input type="text" class="form-control" formControlName="genero" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Tipo Documento</label>
+                    <input type="text" class="form-control" formControlName="tipoDocumento" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Numero Documento</label>
+                    <input type="text" class="form-control col" formControlName="nroDocumento" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">CUIT/CUIL</label>
+                    <input type="text" class="form-control col" formControlName="cuit" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Email</label>
+                    <input type="text" class="form-control" formControlName="email" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" formControlName="telefono" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Creacion</label>
+                    <input type="text" class="form-control" formControlName="createAt" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Rol</label>
+                    <input type="text" class="form-control" formControlName="rol" />
+                </div>
+            </div>
+
+            <hr>
+            <h3 class="text-center">DATOS DOMICILIO</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Nombre Calle</label>
+                    <input type="text" class="form-control col" formControlName="calle" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Numero</label>
+                    <input type="text" class="form-control col" formControlName="numero" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Piso</label>
+                    <input type="text" class="form-control col" formControlName="piso" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Departamento</label>
+                    <input type="text" class="form-control col" formControlName="departamento" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Ciudad</label>
+                    <input type="text" class="form-control col" formControlName="ciudad" />
+                </div>
+            </div>
+
+            <hr *ngIf="!authService.isCliente()">
+            <h3 class="text-center" *ngIf="!authService.isCliente()">DATOS PUESTO DE TRABAJO</h3>
+            <hr *ngIf="!authService.isCliente()">
+
+            <div class="row" *ngIf="!authService.isCliente()">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Nro Legajo</label>
+                    <input type="text" class="form-control col" formControlName="legajo" />
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Sueldo Mensual</label>
+                    <input type="text" class="form-control col" formControlName="sueldo" />
+                </div>
+            </div>
+
+            <div class="row" *ngIf="!authService.isCliente()">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Descripcion Empleo</label>
+                    <textarea class="form-control" formControlName="descripcion"></textarea>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="row">
+            <button type="button" class="btn btn-primary submit-btn btn-block" routerLink="/personas">
+                    Volver
+            </button>
+        </div>
+        <div class="row my-2">
+            <button type="button" class="btn btn-success submit-btn btn-block" (click)="save()">
+                    Actualizar
+            </button>
+        </div>
+    </div>
+</div>

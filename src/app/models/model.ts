@@ -77,6 +77,7 @@ export class Habitacion {
     numeroHabitacion: number;
     fechaCreacion: Date;
     tipoHabitacion: TipoHabitacion;
+    seleccionada: boolean;
 }
 
 export class Reserva {
@@ -95,8 +96,6 @@ export class Reserva {
 
 export class ReservaFilterDTO {
     estado: EstadoReserva;
-    fechaDesde: Date;
-    fechaHasta: Date;
 }
 
 

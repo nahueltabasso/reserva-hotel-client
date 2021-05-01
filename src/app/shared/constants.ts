@@ -15,3 +15,5 @@ export const validEqualsPasswords: ValidatorFn = (
 
     return password.value === confirmPassword.value ? null : { notEquals: true }
 }
+
+export const DEFAULT_PASSWORD = 'abc123456';

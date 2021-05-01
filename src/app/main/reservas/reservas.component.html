@@ -9,14 +9,6 @@
 
             <div class="row">
                 <div class="form-group col">
-                    <input type="date" class="form-control col" formControlName="fechaDesde" placeholder="Fecha Desde" />
-                </div>
-
-                <div class="form-group col">
-                    <input type="date" class="form-control col" min="fechaDesde" formControlName="fechaHasta" placeholder="Ingresar Hasta" />
-                </div>
-
-                <div class="form-group col">
                     <select id="estado" name="estado" formControlName="estadoReserva" placeholder="Seleccionar Ciudad" [compareWith]="compararEstados" class="form-control" (ngModelChange)="seleccionarEstado($event)">
                         <option value="" disabled selected>Seleccionar Estado</option>
                         <option *ngFor="let e of comboEstados" [ngValue]="e">{{ e.descripcion }}</option>
@@ -76,12 +68,12 @@
                                     visibility
                                 </span>
                             </button>
-                            <button mat-mini-fab color="accent" title="Cancelar" [routerLink]="['/reservas/edit', reserva.id]">
+                            <button mat-mini-fab color="accent" title="Cancelar" (click)="cancelarReserva(reserva)">
                                 <span class="material-icons">
                                     edit
                                 </span>      
                             </button>
-                            <button mat-mini-fab color="accent" title="Eliminar" (click)="eliminar(reserva)" [disabled]="true">
+                            <button mat-mini-fab color="accent" title="Eliminar" (click)="eliminar(reserva)">
                                 <span class="material-icons">
                                     delete_forever
                                 </span>  

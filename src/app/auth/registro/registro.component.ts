@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Persona, Pais, Provincia, Localidad, Domicilio } from '../../models/model';
-import { PATTERN_ONLYLETTERS, PATTERN_ONLYNUMBER, validEqualsPasswords, MIN_DNI, MAX_DNI } from '../../shared/constants';
+import { Persona, Pais, Provincia, Localidad, Domicilio, Rol } from '../../models/model';
+import { PATTERN_ONLYLETTERS, PATTERN_ONLYNUMBER, validEqualsPasswords, MIN_DNI, MAX_DNI, DEFAULT_PASSWORD } from '../../shared/constants';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 
@@ -15,16 +15,20 @@ import { PersonaService } from '../../services/persona.service';
 export class RegistroComponent implements OnInit {
 
   formulario: FormGroup;
-  personaDTO: Persona = new Persona();
   comboPaises: Pais[] = [];
   comboProvincias: Provincia[] = [];
   comboLocalidades: Localidad[] = [];
-  flagDpto: boolean = false;
+  flagDpto: boolean = false
+  @Input() personaDTO: Persona = new Persona();
+  @Input() flagAltaUsuarioReserva: boolean = false;
+  @Output() devolverPersona: EventEmitter<Persona>;
 
   constructor(private authService: AuthService,
               private personaService: PersonaService,
               private fb: FormBuilder,
-              private router: Router) {}
+              private router: Router) {
+    this.devolverPersona = new EventEmitter();
+  }
 
   ngOnInit() {
     this.createForm();
@@ -37,6 +41,10 @@ export class RegistroComponent implements OnInit {
       this.formulario.controls['piso'].disable();
       this.formulario.controls['departamento'].disable();
     });
+    if (this.flagAltaUsuarioReserva) {
+      this.formulario.controls['password'].setValue(DEFAULT_PASSWORD);
+      this.formulario.controls['passwordConfirm'].setValue(DEFAULT_PASSWORD);
+    }
   }
 
   public createForm() {
@@ -83,7 +91,6 @@ export class RegistroComponent implements OnInit {
     this.personaService.getLocalidadesByProvincia(event).subscribe(data => {
       this.comboLocalidades = data;
       this.formulario.controls['ciudad'].enable();
-      console.log(this.comboLocalidades);
     });
   }
 
@@ -115,10 +122,13 @@ export class RegistroComponent implements OnInit {
     this.personaDTO.domicilio.piso = piso;
     this.personaDTO.domicilio.departamento = departamento;
 
-    console.log(this.personaDTO);
     this.authService.registracion(this.personaDTO).subscribe(data => {
       Swal.fire('Registrado!', 'Usuario registrado correctamente', 'success');
-      this.router.navigate(['/login']);
+      if (this.flagAltaUsuarioReserva) {
+        this.devolverPersona.emit(data);
+      } else {
+        this.router.navigate(['/login']);
+      }
     }, (err) => {
       Swal.fire('Error!', `${err.error.message}`, 'error');
     });

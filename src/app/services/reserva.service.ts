@@ -20,4 +20,24 @@ export class ReservaService {
   getAllEstados(): Observable<EstadoReserva[]> {
     return this.http.get<EstadoReserva[]>(this.endpoint + '/EstadoReservaList');
   }
+
+  search(idEstado: number): Observable<Reserva[]> {
+    return this.http.get<Reserva[]>(this.endpoint + '/ReservasByEstado?idEstado=' + idEstado);
+  }
+
+  getById(id: number): Observable<Reserva> {
+    return this.http.get<Reserva>(this.endpoint + '/ReservaById?idReserva=' + id);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(this.endpoint + '/Reserva?idReserva=' + id);
+  }
+
+  cancelarReserva(id: number): Observable<String> {
+    return this.http.post<String>(this.endpoint + '/CancelarReserva?idReserva=' + id, null);
+  }
+
+  registrarNuevaReserva(reserva: Reserva): Observable<Reserva> {
+    return this.http.post<Reserva>(this.endpoint + '/Reserva', reserva);
+  }
 }

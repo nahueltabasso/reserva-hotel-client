@@ -12,6 +12,7 @@ export class NavbarComponent implements OnInit {
 
   title: string = 'APP';
   nombreUsuario: string;
+  isCliente: boolean = false;
 
   constructor(private authService: AuthService,
               private storage: TokenStorageService,
@@ -20,6 +21,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     const personaLogueada = this.storage.getUser();
     this.nombreUsuario = personaLogueada.nombre;  
+    if (this.authService.isCliente()) {
+      this.isCliente = true;
+    }
   }
 
   public logout() {

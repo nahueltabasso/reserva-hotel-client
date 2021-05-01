@@ -1,0 +1,261 @@
+<div class="card bg-light text-black-50 my-2">
+    <div class="card-header">
+        <h1 class="text-center">ALTA USUARIO</h1>
+    </div>
+    <div class="card-body">
+        <form class="form-group" [formGroup]="formulario" (ngSubmit)="save()">
+            <h3 class="text-center">DATOS PERSONALES</h3>
+            <hr>
+            <div class="row">
+                <div class="form-group col">
+                    <input type="text" class="form-control" formControlName="nombre" placeholder="Ingresar Nombre" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('nombre').hasError('required') && (formulario.get('nombre').dirty || formulario.get('nombre').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('nombre').hasError('pattern') && (formulario.get('nombre').dirty || formulario.get('nombre').touched)">
+                        Ingrese solo letras
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control" formControlName="apellido" placeholder="Ingresar Apellido" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('apellido').hasError('required') && (formulario.get('apellido').dirty || formulario.get('apellido').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('apellido').hasError('pattern') && (formulario.get('apellido').dirty || formulario.get('apellido').touched)">
+                        Ingrese solo letras
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="tipoDoc" name="tipoDoc" formControlName="tipoDocumento" placeholder="Tipo Documento" class="form-control">
+                        <option value="" disabled selected>Seleccionar Tipo Documento</option>
+                        <option [value]="'DNI'">DNI</option>
+                        <option [value]="'LCI'">LCI</option>    
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('tipoDocumento').hasError('required') && (formulario.get('tipoDocumento').dirty || formulario.get('tipoDocumento').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="nroDocumento" placeholder="Ingresar Numero de documento" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('nroDocumento').hasError('required') && (formulario.get('nroDocumento').dirty || formulario.get('nroDocumento').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('nroDocumento').hasError('pattern') && (formulario.get('nroDocumento').dirty || formulario.get('nroDocumento').touched)">
+                        Ingrese solo numeros
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('nroDocumento').hasError('min') && (formulario.get('nroDocumento').dirty || formulario.get('nroDocumento').touched)">
+                        DNI no valido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('nroDocumento').hasError('max') && (formulario.get('nroDocumento').dirty || formulario.get('nroDocumento').touched)">
+                        DNI no valido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="cuit" placeholder="Ingresar CUIT/L" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('cuit').hasError('required') && (formulario.get('cuit').dirty || formulario.get('cuit').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('cuit').hasError('pattern') && (formulario.get('cuit').dirty || formulario.get('cuit').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="genero" name="genero" formControlName="genero" placeholder="Seleccionar Sexo" class="form-control">
+                        <option value="" disabled selected>Seleccionar Sexo</option>
+                        <option [value]="'M'">MASCULINO</option>
+                        <option [value]="'F'">FEMENINO</option>    
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('genero').hasError('required') && (formulario.get('genero').dirty || formulario.get('genero').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control" formControlName="telefono" placeholder="Ingresar Telefono" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('telefono').hasError('required') && (formulario.get('telefono').dirty || formulario.get('telefono').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('telefono').hasError('pattern') && (formulario.get('telefono').dirty || formulario.get('telefono').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <input type="email" class="form-control" formControlName="email" placeholder="example@liv.com" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('email').hasError('required') && (formulario.get('email').dirty || formulario.get('email').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('email').hasError('email') && (formulario.get('email').dirty || formulario.get('email').touched)">
+                        Email no valido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <select id="rol" name="rol" formControlName="rol" placeholder="Seleccionar Rol" [compareWith]="compararRol" class="form-control" (ngModelChange)="setRol($event)">
+                        <option value="" disabled selected>Seleccionar Rol</option>
+                        <option *ngFor="let r of comboRoles" [ngValue]="r">{{ r.nombreRol }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('rol').hasError('required') && (formulario.get('rol').dirty || formulario.get('rol').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <input type="password" class="form-control col" formControlName="password" placeholder="Ingresar Contraseña" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('password').hasError('required') && (formulario.get('password').dirty || formulario.get('password').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="password" class="form-control col" formControlName="passwordConfirm" placeholder="Ingresar nuevamente la Contraseña" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('passwordConfirm').hasError('required') && (formulario.get('passwordConfirm').dirty || formulario.get('passwordConfirm').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <h3 class="text-center">DATOS DOMICILIO</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="pais" name="pais" formControlName="pais" placeholder="Seleccionar Pais" class="form-control" (ngModelChange)="seleccionarPais($event)">
+                        <option value="" disabled selected>Seleccionar Pais</option>
+                        <option *ngFor="let pais of comboPaises" [value]="pais.id">{{ pais.nombre }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('pais').hasError('required') && (formulario.get('pais').dirty || formulario.get('pais').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <select id="provincia" name="provincia" formControlName="provincia" placeholder="Seleccionar Provincia" class="form-control" (ngModelChange)="seleccionarProvincia($event)">
+                        <option value="" disabled selected>Seleccionar Provincia</option>
+                        <option *ngFor="let prov of comboProvincias" [value]="prov.id">{{ prov.nombre }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('provincia').hasError('required') && (formulario.get('provincia').dirty || formulario.get('provincia').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <select id="ciudad" name="ciudad" formControlName="ciudad" placeholder="Seleccionar Ciudad" [compareWith]="compararLocalidad" class="form-control">
+                        <option value="" disabled selected>Seleccionar Ciudad</option>
+                        <option *ngFor="let l of comboLocalidades" [ngValue]="l">{{ l.nombre }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('ciudad').hasError('required') && (formulario.get('ciudad').dirty || formulario.get('ciudad').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="calle" placeholder="Ingresar Calle" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('calle').hasError('required') && (formulario.get('calle').dirty || formulario.get('calle').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="numero" placeholder="Ingresar Numero" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('numero').hasError('required') && (formulario.get('numero').dirty || formulario.get('numero').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('numero').hasError('pattern') && (formulario.get('numero').dirty || formulario.get('numero').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="isDpto" name="isDpto" formControlName="isDpto" placeholder="Es Departamento" class="form-control" (ngModelChange)="seleccionarTipoCasa($event)">
+                        <option value="" disabled selected>Es Departamento?</option>
+                        <option [value]="'true'">SI</option>
+                        <option [value]="false">NO</option>    
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formulario.get('genero').hasError('required') && (formulario.get('genero').dirty || formulario.get('genero').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="piso" placeholder="Ingresar Piso del Departamento" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('piso').hasError('required') && (formulario.get('piso').dirty || formulario.get('piso').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('piso').hasError('pattern') && (formulario.get('piso').dirty || formulario.get('piso').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="departamento" placeholder="Ingresar Numero del Departamento" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('departamento').hasError('required') && (formulario.get('departamento').dirty || formulario.get('departamento').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('departamento').hasError('pattern') && (formulario.get('departamento').dirty || formulario.get('departamento').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+            </div>
+
+            <hr *ngIf="isEmpleado">
+            <h3 class="text-center" *ngIf="isEmpleado">DATOS EMPLEO</h3>
+            <hr *ngIf="isEmpleado">
+
+            <div class="row" *ngIf="isEmpleado">
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="legajo" placeholder="Ingresar Numero de legajo" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('legajo').hasError('required') && (formulario.get('legajo').dirty || formulario.get('legajo').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('legajo').hasError('pattern') && (formulario.get('legajo').dirty || formulario.get('legajo').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="sueldo" placeholder="Ingresar el Sueldo Mensual" />
+                    <div class="alert alert-danger" *ngIf="formulario.get('sueldo').hasError('required') && (formulario.get('sueldo').dirty || formulario.get('sueldo').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formulario.get('sueldo').hasError('pattern') && (formulario.get('sueldo').dirty || formulario.get('sueldo').touched)">
+                        Ingrese solo numeros
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="isEmpleado">
+                <div class="form-group col">
+                    <textarea class="form-control" formControlName="descripcion" placeholder="Ingresa Breve descripcion del empleo"></textarea>
+                    <div class="alert alert-danger" *ngIf="formulario.get('descripcion').hasError('required') && (formulario.get('descripcion').dirty || formulario.get('descripcion').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formulario.invalid">
+                    Registrar Usuario
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

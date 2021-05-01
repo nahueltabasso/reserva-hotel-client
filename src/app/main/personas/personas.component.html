@@ -1,0 +1,62 @@
+<div class="card border-primary text-center">
+    <div class="card-header">
+        <h1>
+            USUARIOS
+        </h1>
+    </div>
+</div>
+
+<div class="card border-primary text-center my-4">
+    <div class="card-header">
+        <h1 class="align-self-center">
+            Listado de Usuarios
+        </h1>
+        <button mat-raised-button color="accent" [routerLink]="['/personas/form/add']" class="align-self-end">AGREGAR USUARIO</button>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-striped" *ngIf="personaList.length > 0">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Nombre</td>
+                    <td>Apellido</td>
+                    <td>Genero</td>
+                    <td>Create At</td>
+                    <td>Rol</td>
+                    <td>Legajo</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of personaList">
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.nombre }}</td>
+                    <td>{{ p.apellido }}</td>
+                    <td>{{ p.genero === 'M' ? 'Hombre' : 'Mujer' }}</td>
+                    <td>{{ p.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ p.rol.nombreRol }}</td>
+                    <td>{{ p.legajo !== null ? p.legajo : '' }}</td>
+                    <td style="width: 200px; padding-left: 50px;">
+                        <div class="row">
+                            <button mat-mini-fab color="accent" title="Ver Usuario" [routerLink]="['/personas/detalle', p.id]">
+                                <span class="material-icons">
+                                    visibility
+                                </span>
+                            </button>
+                            <button mat-mini-fab color="accent" title="Editar">
+                                <span class="material-icons">
+                                    edit
+                                </span>      
+                            </button>
+                            <button mat-mini-fab color="accent" title="Eliminar" (click)="eliminar(p)">
+                                <span class="material-icons">
+                                    delete_forever
+                                </span>  
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

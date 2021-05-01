@@ -1,1 +1,230 @@
-<p>reserva-add works!</p>
+<div class="card bg-light text-black-50 my-2">
+    <div class="card-header">
+        <h1 class="text-center">FORMULARIO RESERVA</h1>
+    </div>
+    <div class="card-body">
+        <form class="form-group" [formGroup]="formularioFilter" (ngSubmit)="searchHabitacionesOrSalonesDisponibles()">
+            <h3 class="text-center">BUSCAR HABITACIONES DISPONIBLES</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="salon" name="salon" formControlName="salon" placeholder="Seleccionar" class="form-control">
+                        <option value="" disabled selected>Seleccionar Habitacion o Salon</option>
+                        <option [value]="1">Habitacion</option>
+                        <option [value]="2">Salon</option>    
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formularioFilter.get('salon').hasError('required') && (formularioFilter.get('salon').dirty || formularioFilter.get('salon').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <select id="tipoHab" name="tipoHab" formControlName="tipoHab" placeholder="Seleccionar Tipo Habitacion" class="form-control">
+                            <option value="" disabled selected>Seleccionar Tipo Habitacion</option>
+                            <option *ngFor="let th of comboTipoHab" [value]="th.id">{{ th.denominacion }}</option>
+                        </select>
+                    <div class="alert alert-danger" *ngIf="formularioFilter.get('tipoHab').hasError('required') && (formularioFilter.get('tipoHab').dirty || formularioFilter.get('tipoHab').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="date" class="form-control col" formControlName="fechaDesde" placeholder="Seleccionar Fecha" />
+                    <div class="alert alert-danger" *ngIf="formularioFilter.get('fechaDesde').hasError('required') && (formularioFilter.get('fechaDesde').dirty || formularioFilter.get('fechaDesde').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formularioFilter.invalid">
+                    BUSCAR HABITACIONES DISPONIBLES
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card border-primary text-center my-4" *ngIf="mostrarListadoHabitacionesDisp">
+    <div class="card-header">
+        <h1 class="align-self-center">
+            LISTADO HABITACIONES DISPONIBLES
+        </h1>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning" *ngIf="habitacionesDisponibles.length === 0">
+            No hay Habitaciones Disponibles
+        </div>
+
+        <table class="table table-hover table-striped" *ngIf="habitacionesDisponibles.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nro Habitacion</th>
+                    <th>Tipo Habitacion</th>
+                    <th>Precio Por Dia</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let h of habitacionesDisponibles">
+                    <td>{{ h.id }}</td>
+                    <td>{{ h.numeroHabitacion }}</td>
+                    <td>{{ h.tipoHabitacion.denominacion }}</td>
+                    <td>{{ h.tipoHabitacion.precioPorDia | currency }}</td>
+                    <td class="text-justify">
+                        <div class="row">
+                            <button mat-mini-fab color="accent" title="Ver Detalle" (click)="seleccionarHabitacion(h)" [disabled]="h.seleccionada">
+                                <span class="material-icons">
+                                        done_outline
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card border-primary text-center my-4" *ngIf="mostrarListadoSalonesDisp">
+    <div class="card-header">
+        <h1 class="align-self-center">
+            LISTADO SALONES DISPONIBLES
+        </h1>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning" *ngIf="salonesDisponibles.length === 0">
+            No hay Salones Disponibles
+        </div>
+
+        <table class="table table-hover table-striped" *ngIf="salonesDisponibles.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Salon</th>
+                    <th>Capacidad</th>
+                    <th>Precio Por Dia</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of salonesDisponibles">
+                    <td>{{ s.id }}</td>
+                    <td>{{ s.nombreSalon }}</td>
+                    <td>{{ s.capacidad }}</td>
+                    <td>{{ s.precioPorDia | currency }}</td>
+                    <td class="text-justify">
+                        <div class="row">
+                            <button mat-mini-fab color="accent" title="Ver Detalle" (click)="seleccionarHabitacion(s)">
+                                <span class="material-icons">
+                                        done_outline
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card bg-light text-black-50 my-2" *ngIf="mostrarFiltrosPersona">
+    <div class="card-body">
+        <form class="form-group" [formGroup]="formularioFilterPersona" (ngSubmit)="searchPersona()">
+            <h3 class="text-center">BUSCAR PERSONA</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <select id="tipoDoc" name="tipoDoc" formControlName="tipoDocumento" placeholder="Tipo Documento" class="form-control">
+                        <option value="" disabled selected>Seleccionar Tipo Documento</option>
+                        <option [value]="'DNI'">DNI</option>
+                        <option [value]="'LCI'">LCI</option>    
+                    </select>
+                    <div class="alert alert-danger" *ngIf="formularioFilterPersona.get('tipoDocumento').hasError('required') && (formularioFilterPersona.get('tipoDocumento').dirty || formularioFilterPersona.get('tipoDocumento').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <input type="text" class="form-control col" formControlName="nroDocumento" placeholder="Ingresar Numero de documento" />
+                    <div class="alert alert-danger" *ngIf="formularioFilterPersona.get('nroDocumento').hasError('required') && (formularioFilterPersona.get('nroDocumento').dirty || formularioFilterPersona.get('nroDocumento').touched)">
+                        Este campo es requerido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formularioFilterPersona.get('nroDocumento').hasError('pattern') && (formularioFilterPersona.get('nroDocumento').dirty || formularioFilterPersona.get('nroDocumento').touched)">
+                        Ingrese solo numeros
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formularioFilterPersona.get('nroDocumento').hasError('min') && (formularioFilterPersona.get('nroDocumento').dirty || formularioFilterPersona.get('nroDocumento').touched)">
+                        DNI no valido
+                    </div>
+                    <div class="alert alert-danger" *ngIf="formularioFilterPersona.get('nroDocumento').hasError('max') && (formularioFilterPersona.get('nroDocumento').dirty || formularioFilterPersona.get('nroDocumento').touched)">
+                        DNI no valido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formularioFilter.invalid">
+                    BUSCAR PERSONA
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card bg-light text-black-50 my-2" *ngIf="mostrarFormularioAltaNuevoUsuario">
+    <app-registro [flagAltaUsuarioReserva]="true" [personaDTO]="persona" (devolverPersona)="obtenerPersonaParaReserva($event)"></app-registro>
+</div>
+
+<div class="card bg-light text-black-50 my-2" *ngIf="mostrarFormularioReserva">
+    <div class="card-header">
+        <h1 class="text-center">FORMULARIO RESERVA</h1>
+    </div>
+    <div class="card-body">
+        <form class="form-group" [formGroup]="formularioNuevaReserva" (ngSubmit)="save()">
+            <h3 class="text-center">SELECCIONA LAS FECHAS DE LA RESERVA</h3>
+            <hr>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Entrada</label>
+                    <input type="date" class="form-control col" formControlName="fechaEntrada" placeholder="Seleccionar Fecha Desde" />
+                    <div class="alert alert-danger" *ngIf="formularioNuevaReserva.get('fechaEntrada').hasError('required') && (formularioNuevaReserva.get('fechaEntrada').dirty || formularioNuevaReserva.get('fechaEntrada').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Fecha Salida</label>
+                    <input type="date" class="form-control col" formControlName="fechaSalida" placeholder="Seleccionar Fecha Hasta" />
+                    <div class="alert alert-danger" *ngIf="formularioNuevaReserva.get('fechaSalida').hasError('required') && (formularioNuevaReserva.get('fechaSalida').dirty || formularioNuevaReserva.get('fechaSalida').touched)">
+                        Este campo es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="mostrarCamposFormReserva">
+                <div class="form-group col">
+                    <label for="exampleDataList" class="form-label">Cantidad de dias</label>
+                    <input type="text" class="form-control col" formControlName="cantDias" disabled />
+                </div>
+
+                <div class="form-group col" *ngIf="mostrarCamposFormReserva">
+                    <label for="exampleDataList" class="form-label">Precio Total</label>
+                    <input type="text" class="form-control col" formControlName="total" disabled />
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formularioFilter.invalid">
+                    GUARDAR
+                </button>
+                <button type="submit" class="btn btn-primary submit-btn btn-block" [disabled]="formularioFilter.invalid">
+                    VOLVER
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
