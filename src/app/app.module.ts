@@ -26,6 +26,8 @@ import { PerfilComponent } from './main/perfil/perfil.component';
 // MATERIAL
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HabitacionesComponent } from './main/habitaciones/habitaciones.component';
+import { TipoHabitacionesComponent } from './main/tipo-habitaciones/tipo-habitaciones.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     PersonaAddComponent,
     PersonaEditComponent,
     PersonaViewComponent,
-    PerfilComponent
+    PerfilComponent,
+    HabitacionesComponent,
+    TipoHabitacionesComponent
   ],
   imports: [
     BrowserModule,

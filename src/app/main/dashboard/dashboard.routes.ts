@@ -7,6 +7,7 @@ import { PersonasComponent } from '../personas/personas.component';
 import { PersonaViewComponent } from '../personas/persona-view/persona-view.component';
 import { PersonaAddComponent } from '../personas/persona-add/persona-add.component';
 import { PerfilComponent } from '../perfil/perfil.component';
+import { HabitacionesComponent } from '../habitaciones/habitaciones.component';
 
 
 export const dashboardRoutes: Routes = [
@@ -18,6 +19,7 @@ export const dashboardRoutes: Routes = [
     { path: 'personas/detalle/:id', component: PersonaViewComponent },
     { path: 'personas/:id', component: PersonaViewComponent },
     { path: 'personas/form/add', component: PersonaAddComponent },
-    { path: 'mi-perfil', component: PerfilComponent }
+    { path: 'mi-perfil', component: PerfilComponent },
+    { path: 'habitaciones', component: HabitacionesComponent }
 ];
    
